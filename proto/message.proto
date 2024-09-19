@@ -1,0 +1,45 @@
+syntax = "proto3";
+package proto;
+option go_package = "github.com.johnyooho.lmt/proto;proto";
+
+// protoc -I="./actor" --go_out=. --go_opt=paths=source_relative --proto_path=. ./message.proto
+
+import "actor/actor.proto";
+
+message Connect {
+  actor.PID Sender = 1;
+  string name = 2;
+}
+
+message Connected {
+  string Message = 1;
+}
+
+message HeartBeatReq {
+  int32 ping = 1;
+}
+
+message HeartBeatResp {
+  int32 pong = 1;
+  actor.PID Sender = 2;
+}
+
+message SayRequest {
+  string UserName = 1;
+  string Message = 2;
+}
+
+message SayResponse {
+  string UserName = 1;
+  string Message = 2;
+}
+
+message NickRequest {
+  string OldUserName = 1;
+  string NewUserName = 2;
+}
+
+message NickResponse {
+  string OldUserName = 1;
+  string NewUserName = 2;
+}
