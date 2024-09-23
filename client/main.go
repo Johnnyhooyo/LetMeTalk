@@ -1,12 +1,15 @@
 package main
 
 import (
+	"fmt"
 	messages "github.com.johnyooho.lmt/messages"
 	console "github.com/asynkron/goconsole"
 	"github.com/asynkron/protoactor-go/actor"
 	"github.com/asynkron/protoactor-go/remote"
 	"log"
+	"os"
 	"reflect"
+	"strings"
 )
 
 type Client struct {
@@ -49,12 +52,21 @@ func (c2 *Client) Send(msg any) {
 }
 
 func main() {
+	args := os.Args
+	log.Printf(strings.Join(args, ","))
+	addr := ":8091"
+	if len(args) == 4 {
+		ip := args[1]
+		port := args[2]
+		Nick = args[3]
+		addr = fmt.Sprintf("%s:%s", ip, port)
+	}
 	system := actor.NewActorSystem()
-	config := remote.Configure("127.0.0.1", 0)
+	config := remote.Configure("0", 8092, remote.WithAdvertisedHost("localhost:8092"))
 	remoter := remote.NewRemote(system, config)
 	remoter.Start()
 
-	server := actor.NewPID("127.0.0.1:8080", "chatserver")
+	server := actor.NewPID(addr, "chatserver")
 
 	// define root context
 	rootContext := system.Root

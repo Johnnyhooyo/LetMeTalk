@@ -11,6 +11,6 @@ Let me talk~
 5. multi client
 
 # actor
-mainActor: node's root actor
-discoverActor: discover other node, connect to node
-chatActor: connect to client, handle msg
+- mainActor: node's root actor
+- discoverActor: discover other node, connect to node
+- chatActor: connect to client, handle msg

@@ -15,10 +15,10 @@ func init() {
 	}
 
 	cons.Command("/nick", func(newNick string) {
-		Nick = newNick
 		client.RootContext.Send(client.Server, &messages.NickRequest{
 			OldUserName: Nick,
 			NewUserName: newNick,
 		})
+		Nick = newNick
 	})
 }

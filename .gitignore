@@ -26,3 +26,4 @@ go.work.sum
 .idea
 .idea/
 .idea/.gitignore
+client/myclient

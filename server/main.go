@@ -48,7 +48,7 @@ func (s *Server) Receive(ctx actor.Context) {
 
 func main() {
 	system := actor.NewActorSystem()
-	config := remote.Configure("127.0.0.1", 8080)
+	config := remote.Configure("", 8091, remote.WithAdvertisedHost(":8091"))
 	remoter := remote.NewRemote(system, config)
 	remoter.Start()
 
