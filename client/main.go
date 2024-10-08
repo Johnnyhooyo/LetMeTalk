@@ -70,7 +70,12 @@ func main() {
 	server := actor.NewPID(addr, "chatserver")
 
 	// define root context
-	rootContext := system.Root
+	rootContext := system.Root.WithSenderMiddleware(func(next actor.SenderFunc) actor.SenderFunc {
+		return func(ctx actor.SenderContext, target *actor.PID, envelope *actor.MessageEnvelope) {
+			common.DebugLogger.Debug("Actor send message", slog.Any("self", ctx.Self()), slog.Any("target", ctx.Sender()), slog.Any("message", ctx.Message()))
+			next(ctx, target, envelope)
+		}
+	})
 
 	client = &Client{
 		RootContext: rootContext,
@@ -83,12 +88,10 @@ func main() {
 	clientPid := rootContext.Spawn(props)
 	client.PID = clientPid
 
-	common.DefaultLogger.Debug("send connect request")
 	rootContext.Send(server, &messages.Connect{
 		Sender: clientPid,
 		Name:   Nick,
 	})
-	common.DefaultLogger.Debug("listen user input")
 	cons.Run()
 
 }

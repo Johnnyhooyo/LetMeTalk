@@ -4,6 +4,7 @@ import (
 	"github.com.johnyooho.lmt/common"
 	console "github.com/asynkron/goconsole"
 	"github.com/asynkron/protoactor-go/actor"
+	"github.com/asynkron/protoactor-go/actor/middleware"
 	"github.com/asynkron/protoactor-go/remote"
 	"log/slog"
 	"reflect"
@@ -36,7 +37,6 @@ func (s *Server) AddClient(c *actor.PID) {
 }
 
 func (s *Server) Receive(ctx actor.Context) {
-	common.DebugLogger.Debug("receive msg", slog.Any("msg", ctx.Message()))
 	msg := ctx.Message()
 	msgType := reflect.TypeOf(msg) // 获取消息的类型
 
@@ -64,7 +64,10 @@ func main() {
 
 	MonitorClients(clients, rootContext)
 
-	props := actor.PropsFromProducer(func() actor.Actor { return defaultServer })
+	props := actor.PropsFromProducer(func() actor.Actor { return defaultServer }).
+		Configure(actor.WithReceiverMiddleware(func(next actor.ReceiverFunc) actor.ReceiverFunc {
+			return middleware.Logger(next)
+		}))
 
 	_, _ = system.Root.SpawnNamed(props, "chatserver")
 	_, _ = console.ReadLine()
