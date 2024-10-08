@@ -1,10 +1,10 @@
 package main
 
 import (
+	"github.com.johnyooho.lmt/common"
 	console "github.com/asynkron/goconsole"
 	"github.com/asynkron/protoactor-go/actor"
 	"github.com/asynkron/protoactor-go/remote"
-	"log"
 	"reflect"
 )
 
@@ -42,7 +42,7 @@ func (s *Server) Receive(ctx actor.Context) {
 	if handler, ok := s.handlers[msgType]; ok {
 		handler(ctx, msg) // 调用处理函数
 	} else {
-		log.Printf("no handler found for message type: %T", msg)
+		common.DefaultLogger.Error("no handler found for message type: %T", msg)
 	}
 }
 

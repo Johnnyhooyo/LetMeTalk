@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"github.com.johnyooho.lmt/common"
 	messages "github.com.johnyooho.lmt/messages"
 	console "github.com/asynkron/goconsole"
 	"github.com/asynkron/protoactor-go/actor"
@@ -43,7 +44,7 @@ func (c2 *Client) Receive(ctx actor.Context) {
 	if handler, ok := c2.handlers[msgType]; ok {
 		handler(ctx, msg) // 调用处理函数
 	} else {
-		log.Printf("no handler found for message type: %T", msg)
+		common.DefaultLogger.Error("no handler found for message type: %T", msg)
 	}
 }
 
@@ -82,11 +83,12 @@ func main() {
 	clientPid := rootContext.Spawn(props)
 	client.PID = clientPid
 
+	common.DefaultLogger.Debug("send connect request")
 	rootContext.Send(server, &messages.Connect{
 		Sender: clientPid,
 		Name:   Nick,
 	})
-
+	common.DefaultLogger.Debug("listen user input")
 	cons.Run()
 
 }

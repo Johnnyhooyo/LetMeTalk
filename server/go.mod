@@ -1,10 +1,13 @@
 module github.com.johnyooho.lmt/server
 
-go 1.23
+go 1.23.0
 
 replace github.com.johnyooho.lmt/messages => ../proto
 
+replace github.com.johnyooho.lmt/common => ../common
+
 require (
+	github.com.johnyooho.lmt/common v0.0.0-00010101000000-000000000000
 	github.com.johnyooho.lmt/messages v0.0.0-00010101000000-000000000000
 	github.com/asynkron/goconsole v0.0.0-20160504192649-bfa12eebf716
 	github.com/asynkron/protoactor-go v0.0.0-20240822202345-3c0e61ca19c9
@@ -22,7 +25,7 @@ require (
 	github.com/golang/protobuf v1.5.3 // indirect
 	github.com/google/uuid v1.5.0 // indirect
 	github.com/lithammer/shortuuid/v4 v4.0.0 // indirect
-	github.com/lmittmann/tint v1.0.3 // indirect
+	github.com/lmittmann/tint v1.0.5 // indirect
 	github.com/matttproud/golang_protobuf_extensions v1.0.4 // indirect
 	github.com/orcaman/concurrent-map v1.0.0 // indirect
 	github.com/prometheus/client_golang v1.17.0 // indirect

@@ -1,13 +1,13 @@
 package main
 
 import (
+	"github.com.johnyooho.lmt/common"
 	"github.com/asynkron/protoactor-go/actor"
-	"log"
 	"reflect"
 )
 
 func init() {
 	handlerMap[reflect.TypeOf(&actor.Started{})] = func(context actor.Context, i interface{}) {
-		log.Printf("server started")
+		common.DefaultLogger.Info("server started")
 	}
 }
