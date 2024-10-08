@@ -5,6 +5,7 @@ import (
 	console "github.com/asynkron/goconsole"
 	"github.com/asynkron/protoactor-go/actor"
 	"github.com/asynkron/protoactor-go/remote"
+	"log/slog"
 	"reflect"
 )
 
@@ -47,7 +48,9 @@ func (s *Server) Receive(ctx actor.Context) {
 }
 
 func main() {
-	system := actor.NewActorSystem()
+	system := actor.NewActorSystem(actor.WithLoggerFactory(func(system *actor.ActorSystem) *slog.Logger {
+		return common.DebugLogger
+	}))
 	config := remote.Configure("", 8091, remote.WithAdvertisedHost(":8091"))
 	remoter := remote.NewRemote(system, config)
 	remoter.Start()

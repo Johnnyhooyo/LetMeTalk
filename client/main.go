@@ -7,10 +7,8 @@ import (
 	console "github.com/asynkron/goconsole"
 	"github.com/asynkron/protoactor-go/actor"
 	"github.com/asynkron/protoactor-go/remote"
-	"log"
 	"os"
 	"reflect"
-	"strings"
 )
 
 type Client struct {
@@ -54,16 +52,17 @@ func (c2 *Client) Send(msg any) {
 
 func main() {
 	args := os.Args
-	log.Printf(strings.Join(args, ","))
-	addr := ":8091"
+	addr := "10.10.186.34:8091"
 	if len(args) == 4 {
 		ip := args[1]
 		port := args[2]
 		Nick = args[3]
 		addr = fmt.Sprintf("%s:%s", ip, port)
 	}
-	system := actor.NewActorSystem()
-	config := remote.Configure("0", 8092, remote.WithAdvertisedHost("localhost:8092"))
+	system := actor.NewActorSystem(actor.WithLoggerFactory(func(system *actor.ActorSystem) *slog.Logger {
+		return common.DebugLogger
+	}))
+	config := remote.Configure("", 8092, remote.WithAdvertisedHost("localhost:8092"))
 	remoter := remote.NewRemote(system, config)
 	remoter.Start()
 
