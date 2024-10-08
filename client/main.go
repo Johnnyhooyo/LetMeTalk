@@ -53,7 +53,7 @@ func (c2 *Client) Send(msg any) {
 
 func main() {
 	args := os.Args
-	addr := "10.10.186.34:8091"
+	addr := ":8091"
 	if len(args) == 4 {
 		ip := args[1]
 		port := args[2]
