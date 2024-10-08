@@ -7,6 +7,7 @@ import (
 	console "github.com/asynkron/goconsole"
 	"github.com/asynkron/protoactor-go/actor"
 	"github.com/asynkron/protoactor-go/remote"
+	"log/slog"
 	"os"
 	"reflect"
 )
