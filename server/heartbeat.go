@@ -21,14 +21,17 @@ func init() {
 
 func MonitorClients(clients *actor.PIDSet, rootContext *actor.RootContext) {
 	go func() {
+		ticker := time.NewTicker(5 * time.Second)
 		for {
-			time.Sleep(time.Second * 5)
-			for _, client := range pingClients.Values() {
-				common.DefaultLogger.Info("Client %v disConnected", client)
-			}
-			for _, client := range clients.Values() {
-				rootContext.Send(client, &messages.HeartBeatReq{Ping: 1})
-				pingClients.Add(client)
+			select {
+			case <-ticker.C:
+				for _, client := range pingClients.Values() {
+					common.DefaultLogger.Info("Client %v disConnected", client)
+				}
+				for _, client := range clients.Values() {
+					rootContext.Send(client, &messages.HeartBeatReq{Ping: 1})
+					pingClients.Add(client)
+				}
 			}
 		}
 	}()

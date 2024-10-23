@@ -15,8 +15,8 @@ import (
 type Client struct {
 	RootContext *actor.RootContext
 	Server      *actor.PID
-	PID         *actor.PID
-	handlers    map[reflect.Type]Handler
+	*actor.PID
+	handlers map[reflect.Type]Handler
 }
 
 var (
